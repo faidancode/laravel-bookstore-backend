@@ -22,11 +22,19 @@ class ListOrders extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make(),
-            'pending' => Tab::make()
+            'ALL' => Tab::make(),
+            'PENDING' => Tab::make()
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', "PENDING")),
-            'processing' => Tab::make()
+            'PAID' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', "PAID")),
+            'PROCESSING' => Tab::make()
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', "PROCESSING")),
+            'DELIVERED' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', "DELIVERED")),
+            'COMPLETED' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', "COMPLETED")),
+            'CANCELLED' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', "CANCELLED")),
         ];
     }
 }
