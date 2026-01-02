@@ -43,8 +43,8 @@ class BookResource extends JsonResource
                     'name' => $this->author->name,
                 ];
             }),
-            'createdAt' => $this->created_at->toIso8601String(),
-            'updatedAt' => $this->updated_at->toIso8601String(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }
