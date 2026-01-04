@@ -29,19 +29,6 @@ beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
-/**
- * Helper untuk membuat book dengan default value yang umum dipakai di test
- */
-function createBook(array $overrides = []): Book
-{
-    $book = Book::factory()
-        ->for(test()->category, 'category')
-        ->for(test()->author, 'author')
-        ->state(['is_active' => true])
-        ->create($overrides);
-    return $book;
-}
-
 describe('GET /api/v1/books', function () {
 
     it('lists all active books', function () {

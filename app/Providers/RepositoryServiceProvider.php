@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Repositories\BookRepository;
+use App\Repositories\CartRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\Contracts\BookRepositoryInterface;
+use App\Repositories\Contracts\CartRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +22,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             CategoryRepositoryInterface::class,
             CategoryRepository::class
+        );
+
+        $this->app->bind(
+            CartRepositoryInterface::class,
+            CartRepository::class
         );
     }
 }
