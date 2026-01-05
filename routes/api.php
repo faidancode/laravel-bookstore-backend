@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\BookController;
+use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -21,6 +22,14 @@ Route::prefix('v1')->group(function () {
             Route::patch('/items/{itemId}', [CartController::class, 'updateItem']);
             Route::post('/items/{itemId}/decrement', [CartController::class, 'decrement']);
             Route::delete('/items/{itemId}', [CartController::class, 'destroyItem']);
+        });
+
+        Route::prefix('wishlist')->group(function () {
+
+            Route::get('/count', [WishlistController::class, 'count']);
+            Route::get('/', [WishlistController::class, 'show']);
+            Route::post('/', [WishlistController::class, 'store']);
+            Route::delete('/items/{itemId}', [WishlistController::class, 'destroyItem']);
         });
     });
 });
