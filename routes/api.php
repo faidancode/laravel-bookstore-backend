@@ -35,6 +35,7 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('orders')->group(function () {
+            Route::post('/checkout', [OrderController::class, 'checkout']);
             Route::get('/', [OrderController::class, 'index']);           // List Orders
             Route::get('/{id}', [OrderController::class, 'show']);        // Detail Order
             Route::post('/{id}/cancel', [OrderController::class, 'cancel']); // Cancel

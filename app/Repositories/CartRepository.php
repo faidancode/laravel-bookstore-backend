@@ -124,4 +124,17 @@ class CartRepository implements CartRepositoryInterface
 
         return $this->getCartDetail($userId);
     }
+
+   public function clear(string $userId): void
+    {
+        $cart = $this->findByUser($userId);
+        
+        if ($cart) {
+            DB::transaction(function () use ($cart) {
+                CartItem::where('cart_id', $cart->id)->delete();
+
+                $cart->delete();
+            });
+        }
+    }
 }

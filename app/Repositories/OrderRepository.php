@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Order;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class OrderRepository implements OrderRepositoryInterface
 {
@@ -34,5 +35,18 @@ class OrderRepository implements OrderRepositoryInterface
         $order->update($data);
 
         return $order;
+    }
+
+    public function createWithItems(array $orderData, array $items): Order
+    {
+        return DB::transaction(function () use ($orderData, $items) {
+            $order = Order::create($orderData);
+
+            foreach ($items as $item) {
+                $order->items()->create($item);
+            }
+
+            return $order;
+        });
     }
 }

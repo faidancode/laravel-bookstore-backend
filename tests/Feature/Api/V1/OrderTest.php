@@ -3,7 +3,7 @@
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use function Pest\Laravel\{actingAs, getJson, postJson};
+use function Pest\Laravel\{actingAs, getJson, postJson,assertDatabaseHas};
 
 uses(RefreshDatabase::class);
 
@@ -59,7 +59,7 @@ it('can cancel a pending order', function () {
         ->assertJsonPath('status', 'cancelled')
         ->assertJsonPath('cancel_reason', 'Salah pesan barang');
 
-    $this->assertDatabaseHas('orders', [
+    assertDatabaseHas('orders', [
         'id' => $order->id,
         'status' => 'cancelled'
     ]);

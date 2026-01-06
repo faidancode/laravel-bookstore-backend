@@ -13,4 +13,5 @@ interface CartRepositoryInterface
     public function updateItemQuantity(string $itemId, string $userId, int $qty): array;
     public function removeItem(string $itemId, string $userId): array;
     public function decrementItem(string $itemId, string $userId): array;
+    public function clear(string $userId): void;
 }

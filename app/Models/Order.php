@@ -53,4 +53,12 @@ class Order extends Model
         'completed_at' => 'datetime',
         'snap_token_expired_at' => 'datetime',
     ];
+
+    /**
+     * Relasi cart → cart_items
+     */
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

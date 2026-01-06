@@ -38,8 +38,8 @@ class OrderController extends Controller
 
         return response()->json(
             $this->service->cancelOrder(
-                $id, 
-                $request->user()->id, 
+                $id,
+                $request->user()->id,
                 $request->reason
             )
         );
@@ -50,5 +50,20 @@ class OrderController extends Controller
         return response()->json(
             $this->service->completeOrder($id, $request->user()->id)
         );
+    }
+
+    public function checkout(Request $request)
+    {
+        $data = $request->validate([
+            'address_id' => 'required|string|exists:addresses,id',
+            'note' => 'nullable|string|max:255',
+        ]);
+
+        $order = $this->service->checkout($request->user()->id, $data);
+
+        return response()->json([
+            'message' => 'Pesanan berhasil dibuat',
+            'data' => $order->load('items')
+        ], 201);
     }
 }
