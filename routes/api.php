@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\BookController;
 use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
@@ -38,6 +39,14 @@ Route::prefix('v1')->group(function () {
             Route::get('/{id}', [OrderController::class, 'show']);        // Detail Order
             Route::post('/{id}/cancel', [OrderController::class, 'cancel']); // Cancel
             Route::post('/{id}/complete', [OrderController::class, 'complete']); // Complete
+        });
+
+        Route::prefix('addresses')->group(function () {
+            Route::get('/', [AddressController::class, 'index']);
+            Route::post('/', [AddressController::class, 'store']);
+            Route::patch('/{id}', [AddressController::class, 'update']);
+            Route::delete('/{id}', [AddressController::class, 'destroy']);
+            Route::patch('/{id}/set-primary', [AddressController::class, 'setPrimary']);
         });
     });
 });

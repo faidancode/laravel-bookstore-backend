@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\AddressRepository;
 use App\Repositories\BookRepository;
 use App\Repositories\CartRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\Contracts\AddressRepositoryInterface;
 use App\Repositories\Contracts\BookRepositoryInterface;
 use App\Repositories\Contracts\CartRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
@@ -36,6 +38,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             WishlistRepositoryInterface::class,
             WishlistRepository::class
+        );
+
+        $this->app->bind(
+            AddressRepositoryInterface::class,
+            AddressRepository::class
         );
 
         $this->app->bind(

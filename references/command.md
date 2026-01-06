@@ -1,0 +1,8 @@
+- Model
+- Repository Interface
+- Repository
+- Service
+- Controller
+- Api Endpoint (prefix cukup /:namaModule)
+- Factory
+- Pest Test
