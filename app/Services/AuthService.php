@@ -40,4 +40,50 @@ class AuthService
             'token' => $token,
         ];
     }
+
+    public function confirmEmail(string $token): bool
+    {
+        // Pastikan repo mencari user dengan verification_token yang sesuai
+        $user = $this->repo->findByVerificationToken($token);
+
+        if (!$user) {
+            throw new \Exception("Token tidak valid");
+        }
+
+        return $this->repo->update($user, [
+            'email_confirmed' => true,
+            'email_verified_at' => now(),
+            'verification_token' => null,
+        ]);
+    }
+
+    public function initiateResetPassword(string $email): bool
+    {
+        $user = $this->repo->findByEmail($email);
+
+        if (!$user) {
+            // Tetap return true seolah-olah proses berhasil dimulai
+            return false;
+        }
+
+        // Logika kirim email/generate token di sini...
+        // misal: $this->repo->update($user, ['reset_token' => Str::random(64)]);
+
+        return true;
+    }
+
+    public function resetPassword(string $email, string $newPassword): bool
+    {
+        $user = $this->repo->findByEmail($email);
+        if (!$user) {
+            throw ValidationException::withMessages(['email' => ['User tidak ditemukan.']]);
+        }
+        return $this->repo->update($user, ['password' => $newPassword]);
+    }
+
+    public function updateProfile(string $userId, array $data): bool
+    {
+        $user = $this->repo->findById($userId);
+        return $this->repo->update($user, $data);
+    }
 }

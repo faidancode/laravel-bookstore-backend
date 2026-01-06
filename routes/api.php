@@ -18,14 +18,17 @@ Route::prefix('v1')->group(function () {
     Route::get('/categories/{slug}/books', [CategoryController::class, 'showWithBooks']);
 
     Route::prefix('auth')->group(function () {
+        // Public Routes
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+        Route::get('/confirm-email', [AuthController::class, 'confirmEmail']);
 
+        // Protected Routes
         Route::middleware('auth:sanctum')->group(function () {
+            Route::patch('/profile', [AuthController::class, 'updateProfile']);
             Route::post('/logout', [AuthController::class, 'logout']);
-            Route::get('/me', function (Request $request) {
-                return $request->user();
-            });
         });
     });
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
@@ -15,14 +16,8 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'nullable|string|max:30',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $result = $this->service->register($data);
+        // Gunakan $request->validated() karena validasi sudah dilakukan di FormRequest
+        $result = $this->service->register($request->validated());
 
         return response()->json([
             'message' => 'User berhasil didaftarkan',
@@ -34,11 +29,7 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
+        // Langsung ambil data dari request yang sudah tervalidasi
         $result = $this->service->login(
             $request->email,
             $request->password
@@ -52,10 +43,60 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function forgotPassword(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->validate(['email' => 'required|email']);
 
-        return response()->json(['message' => 'Logged out']);
+        $emailSent = $this->service->initiateResetPassword($request->email);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'If your email is in our system, you will receive a link',
+            'emailSent' => $emailSent
+        ]);
+    }
+
+    public function confirmEmail(Request $request)
+    {
+        $request->validate(['token' => 'required|string']);
+
+        try {
+            $this->service->confirmEmail($request->token);
+            $status = true;
+            $message = 'Email verified successfully';
+        } catch (\Exception $e) {
+            $status = false;
+            $message = 'Invalid or expired token';
+        }
+
+        return response()->json([
+            'success' => true,
+            'verified' => $status,
+            'message' => $message
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        // Catatan: Sebaiknya buat ResetPasswordRequest agar lebih rapi
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:8|confirmed',
+            'token' => 'required|string' // Tambahkan token untuk validasi akhir
+        ]);
+
+        $this->service->resetPassword($request->email, $request->password);
+        return response()->json(['message' => 'Password berhasil diperbarui.']);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'phone' => 'sometimes|string|max:30',
+        ]);
+
+        $this->service->updateProfile($request->user()->id, $data);
+        return response()->json(['message' => 'Profil berhasil diperbarui.']);
     }
 }
