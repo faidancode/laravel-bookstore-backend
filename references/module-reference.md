@@ -226,6 +226,9 @@ class CartService
     }
 }
 
+## Request
+namespace App\Http\Requests\Api\V1;
+
 ## Controller
 class CartController extends Controller
 {
@@ -304,6 +307,9 @@ class CartFactory extends Factory
 
 ## Test
 uses(RefreshDatabase::class);
+
+simpan postJson dalam sebuah paragraf misal $postData agar mudah dump() untuk cek error
+import use function Pest\Laravel\{postJson, assertDatabaseHas, withHeader};
 
 beforeEach(function () {
     $this->category = Category::create([

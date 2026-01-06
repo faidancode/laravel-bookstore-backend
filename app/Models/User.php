@@ -4,19 +4,20 @@ namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 
 use function Illuminate\Log\log;
 
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
-
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, SoftDeletes;
     /**
      * Primary key is UUID (string)
      */
@@ -29,11 +30,14 @@ class User extends Authenticatable implements FilamentUser
      * @var list<string>
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
+        'phone',
         'password',
-        'role',
         'is_active',
+        'email_confirmed',
+        'role',
     ];
 
     /**
@@ -49,14 +53,12 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Attribute casting.
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_active' => 'boolean',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'is_active' => 'boolean',
+        'email_confirmed' => 'boolean',
+    ];
 
     public function scopeCustomer($query)
     {

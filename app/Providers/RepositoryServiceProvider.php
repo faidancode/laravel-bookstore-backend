@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Repositories\AddressRepository;
+use App\Repositories\AuthRepository;
 use App\Repositories\BookRepository;
 use App\Repositories\CartRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\Contracts\AddressRepositoryInterface;
+use App\Repositories\Contracts\AuthRepositoryInterface;
 use App\Repositories\Contracts\BookRepositoryInterface;
 use App\Repositories\Contracts\CartRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
@@ -48,6 +50,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             OrderRepositoryInterface::class,
             OrderRepository::class
+        );
+
+        $this->app->bind(
+            AuthRepositoryInterface::class,
+            AuthRepository::class
         );
     }
 }

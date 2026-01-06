@@ -2,6 +2,7 @@
 - Repository Interface
 - Repository
 - Service
+- Request
 - Controller
 - Api Endpoint (prefix cukup /:namaModule)
 - Factory
