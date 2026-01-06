@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\BookController;
 use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\WishlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,13 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [WishlistController::class, 'show']);
             Route::post('/', [WishlistController::class, 'store']);
             Route::delete('/items/{itemId}', [WishlistController::class, 'destroyItem']);
+        });
+
+        Route::prefix('orders')->group(function () {
+            Route::get('/', [OrderController::class, 'index']);           // List Orders
+            Route::get('/{id}', [OrderController::class, 'show']);        // Detail Order
+            Route::post('/{id}/cancel', [OrderController::class, 'cancel']); // Cancel
+            Route::post('/{id}/complete', [OrderController::class, 'complete']); // Complete
         });
     });
 });

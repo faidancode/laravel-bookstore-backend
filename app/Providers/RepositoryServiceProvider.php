@@ -9,6 +9,8 @@ use App\Repositories\Contracts\BookRepositoryInterface;
 use App\Repositories\Contracts\CartRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\WishlistRepositoryInterface;
+use App\Repositories\OrderRepository;
+use App\Repositories\Contracts\OrderRepositoryInterface;
 use App\Repositories\WishlistRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,9 +33,14 @@ class RepositoryServiceProvider extends ServiceProvider
             CartRepository::class
         );
 
-         $this->app->bind(
+        $this->app->bind(
             WishlistRepositoryInterface::class,
             WishlistRepository::class
+        );
+
+        $this->app->bind(
+            OrderRepositoryInterface::class,
+            OrderRepository::class
         );
     }
 }
